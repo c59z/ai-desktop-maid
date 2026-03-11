@@ -7,10 +7,12 @@ import { ollamaClient, ModelInfo } from "./ai/ollamaClient";
 import { promptBuilder } from "./ai/promptBuilder";
 import { memoryService } from "./services/memoryService";
 import { configService } from "./services/configService";
+import { useWindow } from "./hooks/useWindow";
 
 const SELECTED_MODEL_KEY = "selectedModel";
 
 function App() {
+  const { dragWindow, closeWindow, minimizeWindow } = useWindow();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [petMood, setPetMood] = useState<
@@ -238,8 +240,12 @@ function App() {
       {/* 右侧主区域 - 聊天区域 */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* 顶部标题栏 */}
-        <div className="h-14 flex items-center px-4 border-b border-white/10 bg-white/5 backdrop-blur-sm">
-          <div className="flex items-center gap-3">
+        <div className="h-14 flex items-center justify-between px-4 border-b border-white/10 bg-white/5 backdrop-blur-sm">
+          {/* 可拖拽区域 */}
+          <div
+            className="flex items-center gap-3 flex-1 cursor-move"
+            onMouseDown={dragWindow}
+          >
             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-maid-purple to-maid-violet flex items-center justify-center text-white text-sm font-bold">
               莉
             </div>
@@ -249,6 +255,54 @@ function App() {
                 {isTyping ? "正在输入..." : "在线"}
               </p>
             </div>
+          </div>
+
+          {/* 窗口控制按钮 */}
+          <div className="flex items-center gap-2">
+            <button
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={minimizeWindow}
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 hover:text-white transition-colors cursor-pointer"
+              title="最小化"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20 12H4"
+                />
+              </svg>
+            </button>
+            <button
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={closeWindow}
+              className="w-8 h-8 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center text-white transition-colors cursor-pointer"
+              title="关闭"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
         </div>
 
