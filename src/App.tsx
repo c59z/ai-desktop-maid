@@ -190,7 +190,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-maid-purple to-maid-violet flex">
+    <div className="h-full bg-gradient-to-br from-maid-purple to-maid-violet flex">
       {/* 左侧边栏 - 桌宠区域 */}
       <div className="w-20 flex-shrink-0 flex flex-col items-center py-4 border-r border-white/10">
         {/* 设置按钮 */}
